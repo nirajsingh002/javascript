@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>APR Calculator</title>
+	<link type="text/css" rel="stylesheet" href="./css/calculator.css" />
+</head>
+<body>
+	<h3>APR Calculator</h3>
+	<div class="calContainer">
+		<form id="example-form" novalidate>
+			<input type="text" name="amountAdvanced" placeholder="Amount Advanced" required  pattern="^-?\d+$" />
+				<div data-errors-for="amountAdvanced" data-include="form-errors">
+       
+        <div data-errors-when="patternMismatch">number only.</div>
+    </div>
+			<input type="text" name="paybackAmount" placeholder="Payback Amount" required />
+				<div data-errors-for="paybackAmount" data-include="form-errors"></div>
+			<input type="text" name="percentageFCS" placeholder="% of Future Card Sales" required />
+				<div data-errors-for="percentageFCS" data-include="form-errors"></div>
+			<input type="text" name="projectedMCS" placeholder="Projected Monthly Card Sales" required />
+				<div data-errors-for="projectedMCS" data-include="form-errors"></div>
+			<button type="submit">Calculate</button>
+		</form>
+	</div>
+
+<!-- <form id="form" novalidate>
+	<input type="text" id="amountAdvanced" name="amountAdvanced" placeholder="Amount Advanced" required  />
+	<div data-errors-for="amountAdvanced">
+        <div data-errors-when="valueMissing">This field is required 11111.</div>
+    </div>
+  <input type="text" name="firstname" value="" required>
+  <div data-errors-for="firstname" data-include="form-errors"></div>
+  <button type="submit">submit</button>
+</form> -->
+
+<script id="form-errors" type="text/gentle-template">
+  <div data-errors-when="valueMissing">This field is required.</div>
+</script>
+
+<style>
+  .is-changed { outline: 2px solid yellow; }
+  .is-submitted { outline: 2px solid orange; }
+  .is-valid { outline: 1px solid green; }
+  .is-invalid { outline: 1px solid red; }
+</style>
+
+<script src="./js/GentleForm.js"></script>
+<!-- <script>
+  var element = document.getElementById('form')
+  var form = GentleForm(element, function (event) {
+    event.preventDefault()
+    console.log(arguments, this)
+  })
+</script> -->
+<script>
+  GentleForm(document.getElementById('example-form'), function onSubmit (event) {
+  	event.preventDefault();
+    if (this.isValid()) {
+      // do something when form is valid
+    } else {
+    	event.preventDefault();
+      // do something when form is invalid
+    }
+  });
+
+
+
+</script>
+
+</body>
+</html>

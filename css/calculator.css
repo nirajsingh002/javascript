@@ -1,0 +1,41 @@
+/* 
+	Desc: calculator
+ */
+
+ .calContainer {
+ 	width: 400px;
+ }
+
+.calContainer input {
+	display: block;
+	margin-top:20px;
+}
+.calContainer button {
+	margin-top: 20px;
+}
+.is-submitted {border: 1px solid;}
+.is-submitted{ border-color: yellow; }
+ .is-invalid { border-color: red; }
+ .is-valid { border-color: green; }
+.inputBox {
+	position: relative;
+}
+ .inputBox label {
+ 	color: blue;
+ 	position: absolute;
+ 	/* transition: all 2s; */
+ 	animation-name: labelAnimation;
+    animation-duration: 0.2s;
+    animation-timing-function: linear;
+    
+	animation-fill-mode: both;
+ }
+
+/*  .animation {
+	top: -5px;
+}
+*/
+ @keyframes labelAnimation {
+    from {top: -5px;}
+    to {top: -20px}
+}
