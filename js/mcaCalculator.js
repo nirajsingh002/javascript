@@ -2,14 +2,25 @@
 	Desc: MCA APR Calculator
 */
 
-function APRCalculator() {
+function APRCalculator(form) {
 	console.log('mcaCalculator')
+	const formValidationFunctions = new FormValidation();
 
 	const props = {
-		test1: test1
+		getValues: getValues,
+		formValues: createFormValuesObject()
 	}
-	function test1() {
-		console.log('test1')
+	
+	function $$ (selector) {
+      return [].slice.call(form.querySelectorAll(selector))
+    }
+
+	function getValues(elementName) {
+		return $$(`[name=${elementName}]`)[0].value;
+	}
+	
+	function createFormValuesObject() {
+		console.log(formValidationFunctions.getFormChildren())
 	}
 
 	return props;

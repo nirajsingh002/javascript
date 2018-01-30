@@ -1,16 +1,20 @@
-/*function Test() {
-
-}
-
-export {sayHello}*/
 // require('./html5validation');
+
+import Utils from './common'
+
 require('./addcustom-validation');
-  function formValidation(form, onSubmitCallback = function () {}) {
+  const UtilsObj = new Utils();
+  const $$ = UtilsObj.$$;
+  const getFormChildren = UtilsObj.getFormChildren;
+
+  function FormValidation(form, onSubmitCallback = function () {}) {
 
     /* props */
 
     const props = {
-      
+      updateMessage,
+      updateIncludes,
+      isValid: form.checkValidity.bind(form)
     }
 
     /* function */
@@ -32,7 +36,7 @@ require('./addcustom-validation');
       else elements.forEach(element => element.classList.remove(className))
     }
 
-    function $$ (selector) {
+    /*function $$ (selector) {
       return [].slice.call(form.querySelectorAll(selector))
     }
 
@@ -44,7 +48,7 @@ require('./addcustom-validation');
             return notValidableElements.indexOf(type) === -1
           })
           .concat($$('textarea, select'))
-    }
+    }*/
 
     function validate (element) {
       if(element.checkValidity()) {
@@ -59,10 +63,10 @@ require('./addcustom-validation');
       }
 
       // show & hide relevant messages
-      updateMessageFor(element)
+      updateMessage(element)
     }
 
-    function updateMessageFor (element) {
+    function updateMessage (element) {
       const name = element.getAttribute('name')
       const validity = element.validity 
       const customValidity = element.customValidity 
@@ -159,4 +163,4 @@ require('./addcustom-validation');
     return props;
   }
 
-module.exports = formValidation;
+module.exports = FormValidation;
