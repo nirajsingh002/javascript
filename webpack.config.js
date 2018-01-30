@@ -1,12 +1,12 @@
 var path = require('path');
 
 module.exports = {
-	entry: './js/TestClass.js',
+	entry: './js/index.js',
 	output: {
 		path: path.join(__dirname, '/dist'),
 		filename: 'bundle.js',
 		publicPath: "/assets/",
-		library: 'TestClass',
+		library: 'formValidation',
 		libraryTarget: "umd"
 	},
 	devtool: 'inline-source-map',

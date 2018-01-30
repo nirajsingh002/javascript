@@ -1,36 +1,40 @@
+/*function Test() {
+
+}
+
+export {sayHello}*/
 // require('./html5validation');
 require('./addcustom-validation');
+  function formValidation(form, onSubmitCallback = function () {}) {
 
-  function TestClass(form, onSubmitCallback = function () {}) {
+    /* props */
 
-  	/* props */
+    const props = {
+      
+    }
 
-  	const props = {
-  		
-  	}
-
-  	/* function */
-  	function onSubmit(...args) {
-  		console.log('form submitted');
-  		setState(form, 'submitted', true);
-  		validate(form)
+    /* function */
+    function onSubmit(...args) {
+      console.log('form submitted');
+      setState(form, 'submitted', true);
+      validate(form)
       getFormChildren().forEach(validate)
-  		onSubmitCallback.apply(props, args)
-  	}
+      onSubmitCallback.apply(props, args)
+    }
 
-  	function setState(target, state, value) {
-  		const name = target.getAttribute('name');
-  		const statesForElements = $$(`[data-states-for="${name}"]`);
-  		const elements = [target].concat(statesForElements)
-  		const className = `is-${state}`
+    function setState(target, state, value) {
+      const name = target.getAttribute('name');
+      const statesForElements = $$(`[data-states-for="${name}"]`);
+      const elements = [target].concat(statesForElements)
+      const className = `is-${state}`
 
-  		if(value) elements.forEach(element => element.classList.add(className))
-  	 	else elements.forEach(element => element.classList.remove(className))
-  	}
+      if(value) elements.forEach(element => element.classList.add(className))
+      else elements.forEach(element => element.classList.remove(className))
+    }
 
-  	function $$ (selector) {
-  		return [].slice.call(form.querySelectorAll(selector))
-  	}
+    function $$ (selector) {
+      return [].slice.call(form.querySelectorAll(selector))
+    }
 
     function getFormChildren () {
       return $$('input')
@@ -42,21 +46,21 @@ require('./addcustom-validation');
           .concat($$('textarea, select'))
     }
 
-  	function validate (element) {
-  		if(element.checkValidity()) {
-  			element.removeAttribute('aria-invalid')
+    function validate (element) {
+      if(element.checkValidity()) {
+        element.removeAttribute('aria-invalid')
         setState(element, 'valid', true) // add class is-valid
         setState(element, 'invalid', false) // remove class is-invalid
-  		} else {
-  			console.log("invalid")
-  			element.setAttribute('aria-invalid', 'true');
-  			setState(element, 'valid', false) // remove class is-valid
-  			setState(element, 'invalid', true) // add class is-invalid
-  		}
+      } else {
+        console.log("invalid")
+        element.setAttribute('aria-invalid', 'true');
+        setState(element, 'valid', false) // remove class is-valid
+        setState(element, 'invalid', true) // add class is-invalid
+      }
 
       // show & hide relevant messages
       updateMessageFor(element)
-  	}
+    }
 
     function updateMessageFor (element) {
       const name = element.getAttribute('name')
@@ -128,11 +132,11 @@ require('./addcustom-validation');
                 $$(`[for=${name}]`)[0].classList.add('animation')
     } else {
 
-      $$(`[for=${name}]`)[0].remove()
+      $$(`[for=${name}]`)[0].length ? $$(`[for=${name}]`)[0].remove() : '';
     }
   }
-  	/* init */
-  	form.addEventListener('submit', onSubmit, false);
+    /* init */
+    form.addEventListener('submit', onSubmit, false);
 
     form.addEventListener('change', function(event) {
       const target = event.target
@@ -152,7 +156,7 @@ require('./addcustom-validation');
     
     updateIncludes()
     $$('[data-errors-when]').forEach(hide)
-  	return props;
+    return props;
   }
 
-module.exports = TestClass;
+module.exports = formValidation;
