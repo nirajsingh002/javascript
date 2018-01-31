@@ -1,28 +1,29 @@
 /*
 	desc: common finctionalities
 */
+var Utils = (function () {
 
-function Utils() {
+		function $$ (selector, parentSelector) {
+	      return [].slice.call(parentSelector.querySelectorAll(selector))
+	    }
 
-	return {
-
-		$$: function (selector) {
-	      return [].slice.call(document.querySelectorAll(selector))
-	    },
-
-	    getFormChildren: function () {
-	      return $$('input')
+	    function getFormChildren (form) {
+	      return $$('input', form)
 	          .filter(function(child) {
 	            const type = child.getAttribute('name')
 	            const notValidableElements = ["button", "submit", "reset", "file"]
 	            return notValidableElements.indexOf(type) === -1
 	          })
-	          .concat($$('textarea, select'))
+	          .concat($$('textarea, select', form))
 	    }
-	}
-
-}
-
-
+	    
+	    function addCommas(number) {
+			return number.toFixed(0).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+		}
+	    return {
+	    	$$: $$,
+	    	getFormChildren: getFormChildren
+	    }
+})()
 
 module.exports = Utils

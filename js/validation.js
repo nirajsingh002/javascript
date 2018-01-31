@@ -2,10 +2,11 @@
 
 import Utils from './common'
 
-require('./addcustom-validation');
-  const UtilsObj = new Utils();
-  const $$ = UtilsObj.$$;
-  const getFormChildren = UtilsObj.getFormChildren;
+  /* common functionalities */
+  require('./addcustom-validation');
+  
+  const $$ = Utils.$$;
+  const getFormChildren = Utils.getFormChildren;
 
   function FormValidation(form, onSubmitCallback = function () {}) {
 
@@ -22,13 +23,13 @@ require('./addcustom-validation');
       console.log('form submitted');
       setState(form, 'submitted', true);
       validate(form)
-      getFormChildren().forEach(validate)
+      getFormChildren(form).forEach(validate)
       onSubmitCallback.apply(props, args)
     }
 
     function setState(target, state, value) {
       const name = target.getAttribute('name');
-      const statesForElements = $$(`[data-states-for="${name}"]`);
+      const statesForElements = $$(`[data-states-for="${name}"]`, form);
       const elements = [target].concat(statesForElements)
       const className = `is-${state}`
 
@@ -93,7 +94,7 @@ require('./addcustom-validation');
         */
         const isValid = validityObject[key] === false
 
-        const messages = $$(`[data-errors-for="${name}"] [data-errors-when="${key}"]`)
+        const messages = $$(`[data-errors-for="${name}"] [data-errors-when="${key}"]`, form)
 
         messages.forEach(function (message) {
           if(isValid) hide(message)
@@ -114,18 +115,18 @@ require('./addcustom-validation');
     const includesCache = {}
 
   function updateIncludes () {
-    $$('[data-include]').forEach(function (element) {
+    $$('[data-include]', form).forEach(function (element) {
       const id = element.getAttribute('data-include')
       if (includesCache[id] == null) includesCache[id] = document.getElementById(id).innerHTML
       element.innerHTML = includesCache[id]
     })
   }
 
-  function addLabel(element) {
+  function addLabel(element, form) {
       const parentNode = element.parentNode,
             name = element.getAttribute('name');
     if(element.value) {
-    if($$(`[for=${name}]`).length) return false; // if exist
+    if($$(`[for=${name}]`, form).length) return false; // if exist
         const labelText = element.getAttribute('placeholder'),
               labelElem = document.createElement('label');
               labelElem.innerHTML = labelText;
@@ -133,10 +134,10 @@ require('./addcustom-validation');
               //prepend it
               parentNode.insertBefore(labelElem, parentNode.childNodes[0])
               
-                $$(`[for=${name}]`)[0].classList.add('animation')
+                $$(`[for=${name}]`, form)[0].classList.add('animation')
     } else {
 
-      $$(`[for=${name}]`)[0].length ? $$(`[for=${name}]`)[0].remove() : '';
+      $$(`[for=${name}]`, form).length ? $$(`[for=${name}]`, form)[0].remove() : '';
     }
   }
     /* init */
@@ -150,16 +151,18 @@ require('./addcustom-validation');
       
     }, false)
 
-    form.addEventListener('keyup', function(event) {
-      const target = event.target
-      addLabel(target)
-    }, false)
+    getFormChildren(form).forEach(function(element) {
+      element.addEventListener('keyup', function(event) {
+        const target = event.target
+        addLabel(target, form)
+      }, false)
+    })
 
     
-    $$('[data-errors-when]').forEach(hide)
+    $$('[data-errors-when]', form).forEach(hide)
     
     updateIncludes()
-    $$('[data-errors-when]').forEach(hide)
+    $$('[data-errors-when]', form).forEach(hide)
     return props;
   }
 

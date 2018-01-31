@@ -11,8 +11,11 @@ var form = document.getElementById('aprCalc');
 
 function callbackFn(event) {
 		event.preventDefault();
+		if(this.isValid()) {
 		var APRcalc = new APRCalculator(form);
-		APRcalc.getValues();
+		console.log(APRcalc)
+		
+		}
 }
 
 var formValidatonInstance = FormValidation(form, callbackFn);
