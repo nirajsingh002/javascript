@@ -3,29 +3,11 @@
 */
 
 import Utils from './common'
-
+import RATE from './rate'
 
 function APRCalculator(form) {
 	console.log('mcaCalculator111')
 	var currentObject = this;
-	this.inputValues = {
-		inputFormValues: createFormValuesObject(form),
-	}
-/*
-	const dailyPaymentA = dailyPayment.call(this)
-	const daysToRepayA = daysToRepay.call(this)
-	
-	this.outputValues =  {
-		calculatedValues: {
-			dailyPayment: dailyPaymentA,
-			daysToRepay: daysToRepayA
-		}
-	}*/
-	var	cumulativeValues = [];
-	// this.sequientiallyRunFn = this.sequientiallyRunFn.bind(this);
-
-	sequientiallyRunFn.call(this, dailyPayment, daysToRepay)
-	
 	
 	function getValues(elementName, form) {
 		return Utils.$$(`[name=${elementName}]`, form)[0].value;
@@ -42,40 +24,50 @@ function APRCalculator(form) {
 
 	// approx daily Payment = (Estimated monthly card sales / 30) * percentage_future_card_sales
 	function dailyPayment() {
-		const dailyPaymentAmount = (this.inputValues.inputFormValues.projectedMCS/30) * (this.inputValues.inputFormValues.percentageFCS/100);
+		const dailyPaymentAmount = (this.inputFormValues.projectedMCS/30) * (this.inputFormValues.percentageFCS/100);
 		return dailyPaymentAmount.toFixed(0);
 	}
 	// approx. # Days to Repay = Payback Amount / Daily Payment
-	function daysToRepay() {
-		const daysToRepay = (this.inputValues.inputFormValues.paybackAmount / dailyPaymentA);
+	function daysToRepay(cumulativeValues) {
+		const daysToRepay = (this.inputFormValues.paybackAmount / cumulativeValues["dailyPayment"]);
 		return addCommas(daysToRepay);
 	}
 
-	function calculatedValues(){
-		var calculatedValues = {
-									dailyPaymentAmount: dailyPayment(),
-									daysToRepay: daysToRepay()
-								}
-		return calculatedValues;
+	// Financing Cost = Payback Amout - Amount Advanced
+	function financingCost () {
+		const financing_cost = Number(this.inputFormValues.paybackAmount - this.inputFormValues.amountAdvanced)
+		return financing_cost;
 	}
 
+	// Effective APR = RATE(daysToRepay, dailyPayment, advanceAmount) * 365 * 100
+	function APRCalculation(cumulativeValues) {
+		const effective_APR = RATE(cumulativeValues.daysToRepay, -(cumulativeValues.dailyPayment), Number(this.inputFormValues.amountAdvanced)) * 365 * 100;
+		return effective_APR.toFixed(2);
+	}
+
+	function dailyInterestRate(cumulativeValues) {
+		const dailyInterestRateAmount = (cumulativeValues.APRCalculation / 365);
+		return dailyInterestRateAmount.toFixed(4)
+	}
 	// utility functions
 	function addCommas(number) {
 			return number.toFixed(0).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
 		}
-
-	function sequientiallyRunFn(...args) {
-		// var args = [].slice.call(arguments);
-		
-		args.forEach(function(name, index, array) {
-			cumulativeValues[index] = {
-				[name]: array[index].call(currentObject)	
-			} 
-		})
-		return cumulativeValues;
+	// add percentage sign and fixed to two decimal point
+	function toPercentage(number, decimalNumber) {
+			number = number.toFixed(decimalNumber)
+		return number+"%";
 	}
+	
 
-	return Object.assign({}, this.inputValues, this.outputValues) ;
+	return {
+		inputFormValues: createFormValuesObject(form),
+		dailyPayment: dailyPayment,
+		daysToRepay: daysToRepay,
+		financingCost: financingCost,
+		APRCalculation: APRCalculation,
+		dailyInterestRate: dailyInterestRate
+	} //Object.assign(this.inputValues, this.publicMethods) ;
 }
 
 module.exports = APRCalculator;

@@ -20,9 +20,23 @@ var Utils = (function () {
 	    function addCommas(number) {
 			return number.toFixed(0).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
 		}
+
+		function sequientiallyRunFn(...args) {
+			// var args = [].slice.call(arguments);
+			var currentObj = this;
+			var cumulativeValues = {}; 
+			args.forEach(function(name, index, array) {
+				Object.assign(cumulativeValues, {[name]: currentObj[name](cumulativeValues)})
+				/*cumulativeValues[index] = {
+					[name]: currentObj[name](cumulativeValues)	
+				} */
+			})
+			return cumulativeValues;
+		}
 	    return {
 	    	$$: $$,
-	    	getFormChildren: getFormChildren
+	    	getFormChildren: getFormChildren,
+	    	sequientiallyRunFn: sequientiallyRunFn
 	    }
 })()
 

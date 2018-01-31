@@ -37,20 +37,7 @@ import Utils from './common'
       else elements.forEach(element => element.classList.remove(className))
     }
 
-    /*function $$ (selector) {
-      return [].slice.call(form.querySelectorAll(selector))
-    }
-
-    function getFormChildren () {
-      return $$('input')
-          .filter(function(child) {
-            const type = child.getAttribute('name')
-            const notValidableElements = ["button", "submit", "reset", "file"]
-            return notValidableElements.indexOf(type) === -1
-          })
-          .concat($$('textarea, select'))
-    }*/
-
+   
     function validate (element) {
       if(element.checkValidity()) {
         element.removeAttribute('aria-invalid')

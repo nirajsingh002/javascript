@@ -2,6 +2,7 @@
 	Desc: Form validation
 */
 
+import Utils from './common'
 import FormValidation from './validation';
 import APRCalculator from './mcaCalculator';
 
@@ -14,6 +15,8 @@ function callbackFn(event) {
 		if(this.isValid()) {
 		var APRcalc = new APRCalculator(form);
 		console.log(APRcalc)
+		var calculatedValues = Utils.sequientiallyRunFn.call(APRcalc, "dailyPayment", "daysToRepay", "financingCost", "APRCalculation", "dailyInterestRate");
+		console.log(calculatedValues)
 		
 		}
 }
