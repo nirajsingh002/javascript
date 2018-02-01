@@ -6,7 +6,7 @@ const routines = {
   checkGreaterThan: require('./routines/greaterthan')
 }
 
-;[HTMLInputElement].forEach(function (constructor) {
+;[HTMLInputElement, HTMLFormElement].forEach(function (constructor) {
 	Object.defineProperty(constructor.prototype, 'customValidity', {
 		get() {
 			const customValidity = { valid: true }
@@ -20,5 +20,18 @@ const routines = {
 		return customValidity
 		},
 		configurable: true
-	})
+	});
+ 	constructor.prototype.customCheckValidity = function() {
+	console.log('customCheckValidity')
+	const form = this;
+
+	function $$ ( selector ) {
+		return [].slice.call(form.querySelectorAll(selector))
+	}
+
+	return $$('input')
+		.filter((input) => ['button', 'submit', 'reset'].indexOf(input.getAttribute('type')) === -1 )
+		.concat($$('textarea, select'))
+		.every((input) => input.customValidity.valid === true)
+	}
 })

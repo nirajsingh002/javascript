@@ -9,7 +9,7 @@ module.exports = function (input) {
 		const value1 = Number(input.value) // value1
 		const comparewtihElm = input.getAttribute('greaterThan')
 		const value2 = Number(document.querySelector(`[name="${comparewtihElm}"]`).value) // value2
-		console.log('compare', value1 > value2)
+		console.log('compare', value1 < value2)
 
 		return (value1 < value2)
 	}
