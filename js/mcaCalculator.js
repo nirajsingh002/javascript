@@ -10,7 +10,7 @@ function APRCalculator(form) {
 	var currentObject = this;
 	
 	function getValues(elementName, form) {
-		return Utils.$$(`[name=${elementName}]`, form)[0].value;
+		return Utils.$$(`[name=${elementName}]`, form)[0].value.replace(/\,/g, '');
 	}
 	
 	function createFormValuesObject(form) {
@@ -53,6 +53,20 @@ function APRCalculator(form) {
 	function addCommas(number) {
 			return number.toFixed(0).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
 		}
+
+	// print values
+	function printCalcValues(selector, calculatedValues) {
+		const outputContainer = document.getElementById(selector);
+		var  htmlStr = '';
+			 htmlStr += `<table>\
+							<tr><td> Daily Payment </td><td>$ ${calculatedValues['dailyPayment']} </td></tr>\
+							<tr><td> Daily Interest Rate </td><td> ${calculatedValues['dailyInterestRate']} %</td></tr>\
+							<tr><td> APR </td><td> ${calculatedValues['APRCalculation']} %</td></tr>\
+							<tr><td> Repaid in about </td><td> ${calculatedValues['daysToRepay']} days</td></tr>\
+							<tr><td> Total Financing Cost </td><td>$ ${calculatedValues['financingCost']} </td></tr>\
+						</table>`; 
+		outputContainer.innerHTML = htmlStr;
+	}
 	// add percentage sign and fixed to two decimal point
 	function toPercentage(number, decimalNumber) {
 			number = number.toFixed(decimalNumber)
@@ -66,7 +80,8 @@ function APRCalculator(form) {
 		daysToRepay: daysToRepay,
 		financingCost: financingCost,
 		APRCalculation: APRCalculation,
-		dailyInterestRate: dailyInterestRate
+		dailyInterestRate: dailyInterestRate,
+		printCalcValues: printCalcValues
 	} //Object.assign(this.inputValues, this.publicMethods) ;
 }
 

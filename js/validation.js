@@ -10,14 +10,19 @@ import Utils from './common'
 
   function FormValidation(form, onSubmitCallback = function () {}) {
 
+    /*var options = arguments.length == 2 > (typeof options)  
+    var onSubmitCallback = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : function () {};*/
+
     /* props */
 
     const props = {
+      showLabel: true,
       updateMessage,
       updateIncludes,
       isValid: form.checkValidity.bind(form)
     }
-
+    // Object.assign(props, options);
+    console.log('props', props);
     /* function */
     function onSubmit(...args) {
       console.log('form submitted');
@@ -57,9 +62,9 @@ import Utils from './common'
     function updateMessage (element) {
       const name = element.getAttribute('name')
       const validity = element.validity 
-      const customValidity = element.customValidity 
-     addMessageForValidation(name, validity) // check for default validity object
-     addMessageForValidation(name, customValidity) // check for custom validity object
+      // const customValidity = element.customValidity 
+      addMessageForValidation(name, validity) // check for default validity object
+      // addMessageForValidation(name, customValidity) // check for custom validity object
 
     }
 
@@ -137,14 +142,16 @@ import Utils from './common'
       validate(target)
       
     }, false)
+    // show label true
+    if(props.showLabel) {
+      getFormChildren(form).forEach(function(element) {
+        element.addEventListener('keyup', function(event) {
+          const target = event.target
 
-    getFormChildren(form).forEach(function(element) {
-      element.addEventListener('keyup', function(event) {
-        const target = event.target
-        addLabel(target, form)
-      }, false)
-    })
-
+          addLabel(target, form)
+        }, false)
+      })
+    }
     
     $$('[data-errors-when]', form).forEach(hide)
     

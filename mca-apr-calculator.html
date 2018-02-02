@@ -10,29 +10,30 @@
 	<div class="calContainer">
 		<form id="aprCalc" novalidate>
 			<div class="inputBox">
-			<input type="text" name="amountAdvanced" placeholder="Amount Advanced" value="20000" required /> <!--pattern="(\d)|((\d+(\,|\.))+\d{1,})"-->
+			<input type="text" name="amountAdvanced" placeholder="Amount Advanced" value="20000" required onkeypress="return Utils.isNumber(event);";/>
 				<div data-errors-for="amountAdvanced">
 					<div data-errors-when="valueMissing">This field is required.</div>
 					<div data-errors-when="patternMismatch">Number only</div>
 				</div>
 			</div>
 			<div class="inputBox">
-				<input type="text" name="paybackAmount" placeholder="Payback Amount" value="24000" greaterThan="amountAdvanced" required/>
+				<input type="text" name="paybackAmount" placeholder="Payback Amount" value="" greaterThan="amountAdvanced" required onkeypress="return Utils.isNumber(event);";/>
 				<div data-errors-for="paybackAmount">
 				<div data-errors-when="valueMissing">This field is required.</div>
 		        <div data-errors-when="checkGreaterThan">It should be greater than advance amount</div>
 		    	</div>
 		    </div>
 		    <div class="inputBox">
-				<input type="text" name="percentageFCS" placeholder="% of Future Card Sales" value="15" />
+				<input type="text" name="percentageFCS" placeholder="% of Future Card Sales" value="" onkeypress="return Utils.isNumber(event);";/>
 				<div data-errors-for="percentageFCS" data-include="form-errors"></div>
 			</div>
 			<div class="inputBox">
-				<input type="text" name="projectedMCS" placeholder="Projected Monthly Card Sales" value="20000" />
+				<input type="text" name="projectedMCS" placeholder="Projected Monthly Card Sales" value="" onkeypress="return Utils.isNumber(event);";/>
 				<div data-errors-for="projectedMCS" data-include="form-errors"></div>
 			</div>
 				<button type="submit">Calculate</button>
 		</form>
+		<div id="printOutput"></div>
 	</div>
 
 	<script id="form-errors" type="text/gentle-template">
@@ -40,6 +41,11 @@
 	</script>
 
 <script src="./dist/bundle.js"></script>
-
+<script>
+/*window.onload = function() {
+	require('./js/common');
+	Utils.isNumber(event);
+}*/
+</script>
 </body>
 </html>
