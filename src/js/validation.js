@@ -27,7 +27,7 @@ import Utils from './common'
 
     /* function */
     function onSubmit(...args) {
-      console.log('form submitted');
+      // console.log('form submitted');
       setState(form, 'submitted', true);
       validate(form)
       getFormChildren(form).forEach(validate)
@@ -64,9 +64,9 @@ import Utils from './common'
     function updateMessage (element) {
       const name = element.getAttribute('name')
       const validity = element.validity 
-      // const customValidity = element.customValidity 
+      const customValidity = element.customValidity 
       addMessageForValidation(name, validity) // check for default validity object
-      // addMessageForValidation(name, customValidity) // check for custom validity object
+      addMessageForValidation(name, customValidity) // check for custom validity object
 
     }
 

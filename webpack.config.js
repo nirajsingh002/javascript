@@ -1,7 +1,7 @@
 var path = require('path');
 
 module.exports = {
-	entry: './js/app.js',
+	entry: './src/js/app.js',
 	output: {
 		path: path.join(__dirname, '/dist'),
 		filename: 'bundle.js',
@@ -9,7 +9,7 @@ module.exports = {
 		library: 'formValidation',
 		libraryTarget: "umd"
 	},
-	devtool: 'inline-source-map',
+	devtool: 'none',
 	resolve: {
         extensions: ['.js']
     },

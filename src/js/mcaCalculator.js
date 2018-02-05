@@ -58,7 +58,7 @@ function APRCalculator(form) {
 	function printCalcValues(selector, calculatedValues) {
 		const outputContainer = document.getElementById(selector);
 		var  htmlStr = '';
-			 htmlStr += `<table>\
+			 htmlStr += `<table cellspacing="10">\
 							<tr><td> Daily Payment </td><td>$ ${calculatedValues['dailyPayment']} </td></tr>\
 							<tr><td> Daily Interest Rate </td><td> ${calculatedValues['dailyInterestRate']} %</td></tr>\
 							<tr><td> APR </td><td> ${calculatedValues['APRCalculation']} %</td></tr>\
