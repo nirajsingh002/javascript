@@ -19,10 +19,12 @@ import Utils from './common'
       showLabel: true,
       updateMessage,
       updateIncludes,
-      isValid: form.checkValidity.bind(form)
+      isValid: isValid
     }
-    // Object.assign(props, options);
-    console.log('props', props);
+    function isValid() {
+      return ( form.checkValidity() && form.customCheckValidity() )
+    }
+
     /* function */
     function onSubmit(...args) {
       console.log('form submitted');
@@ -44,7 +46,7 @@ import Utils from './common'
 
    
     function validate (element) {
-      if(element.checkValidity()) {
+      if(element.checkValidity() && element.customCheckValidity()) {
         element.removeAttribute('aria-invalid')
         setState(element, 'valid', true) // add class is-valid
         setState(element, 'invalid', false) // remove class is-invalid
