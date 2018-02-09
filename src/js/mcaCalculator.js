@@ -24,8 +24,9 @@ function APRCalculator(form) {
 
 	// approx daily Payment = (Estimated monthly card sales / 30) * percentage_future_card_sales
 	function dailyPayment() {
-		const dailyPaymentAmount = (this.inputFormValues.projectedMCS/30) * (this.inputFormValues.percentageFCS/100);
-		return dailyPaymentAmount.toFixed(0);
+		const percentage_of_sales_withheld = this.inputFormValues.percentageFCS/100;
+		const dailyPaymentAmount = (this.inputFormValues.projectedMCS/30) * percentage_of_sales_withheld;
+		return dailyPaymentAmount;
 	}
 	// approx. # Days to Repay = Payback Amount / Daily Payment
 	function daysToRepay(cumulativeValues) {
@@ -42,12 +43,14 @@ function APRCalculator(form) {
 	// Effective APR = RATE(daysToRepay, dailyPayment, advanceAmount) * 365 * 100
 	function APRCalculation(cumulativeValues) {
 		const effective_APR = RATE(cumulativeValues.daysToRepay, -(cumulativeValues.dailyPayment), Number(this.inputFormValues.amountAdvanced)) * 365 * 100;
-		return effective_APR.toFixed(2);
+		return effective_APR;
 	}
 
 	function dailyInterestRate(cumulativeValues) {
-		const dailyInterestRateAmount = (cumulativeValues.APRCalculation / 365);
-		return dailyInterestRateAmount.toFixed(4)
+		const currentYear = new Date().getFullYear();
+		const number_of_days = Utils.isLeapYear(currentYear) ? 366 : 365;
+		const dailyInterestRateAmount = (cumulativeValues.APRCalculation / number_of_days);
+		return dailyInterestRateAmount;
 	}
 	// utility functions
 	function addCommas(number) {
@@ -57,11 +60,14 @@ function APRCalculator(form) {
 	// print values
 	function printCalcValues(selector, calculatedValues) {
 		const outputContainer = document.getElementById(selector);
+		const daily_payment = calculatedValues['dailyPayment'].toFixed(2);
+		const APRCalculation = calculatedValues['APRCalculation'].toFixed(2);
+		const dailyInterestRate = calculatedValues['dailyInterestRate'].toFixed(4);
 		var  htmlStr = '';
 			 htmlStr += `<table cellspacing="10">\
-							<tr><td> Daily Payment </td><td>$ ${calculatedValues['dailyPayment']} </td></tr>\
-							<tr><td> Daily Interest Rate </td><td> ${calculatedValues['dailyInterestRate']} %</td></tr>\
-							<tr><td> APR </td><td> ${calculatedValues['APRCalculation']} %</td></tr>\
+							<tr><td> Daily Payment </td><td>$ ${daily_payment} </td></tr>\
+							<tr><td> Daily Interest Rate </td><td> ${dailyInterestRate} %</td></tr>\
+							<tr><td> APR </td><td> ${APRCalculation} %</td></tr>\
 							<tr><td> Repaid in about </td><td> ${calculatedValues['daysToRepay']} days</td></tr>\
 							<tr><td> Total Financing Cost </td><td>$ ${calculatedValues['financingCost']} </td></tr>\
 						</table>`; 

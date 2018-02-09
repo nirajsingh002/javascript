@@ -58,12 +58,18 @@ var Utils = (function () {
 			return true;
 		} 
 
+		// check for leap year
+		function isLeapYear(currentYear) {
+			return (currentYear % 400 === 0) || (currentYear % 100 !== 0 && currentYear % 4 === 0);
+		}
+
 	    return {
 	    	$$: $$,
 	    	getFormChildren: getFormChildren,
 	    	sequientiallyRunFn: sequientiallyRunFn,
 	    	isNumber: isNumber,
-	    	addCommas: addCommas
+	    	addCommas: addCommas,
+	    	isLeapYear: isLeapYear
 	    }
 })()
 
