@@ -23,12 +23,16 @@
 		    	</div>
 		    </div>
 		    <div class="inputBox">
-				<input type="text" name="percentageFCS" placeholder="% of Future Card Sales" value="" onkeypress="return Utils.isNumber(event);";/>
-				<div data-errors-for="percentageFCS" data-include="form-errors"></div>
+				<input type="text" name="percentageFCS" placeholder="% of Future Card Sales" value="" onkeypress="return Utils.isNumber(event);"; pattern="\b(0*(?:[1-9][0-9]?|100))\b" required/>
+				<div data-errors-for="percentageFCS">
+					<div data-errors-when="valueMissing">This field is required.</div>
+					<div data-errors-when="patternMismatch">Not more than 100</div>
+				</div>
 			</div>
 			<div class="inputBox">
-				<input type="text" name="projectedMCS" placeholder="Projected Monthly Card Sales" value="" onkeypress="return Utils.isNumber(event);";/>
-				<div data-errors-for="percentageFCS" data-include="form-errors"></div>
+				<input type="text" name="projectedMCS" placeholder="Projected Monthly Card Sales" value="" onkeypress="return Utils.isNumber(event);" required/>
+				<div data-errors-for="projectedMCS" data-include="form-errors"></div>
+				
 			</div>
 			
 				<button type="submit">Calculate</button>

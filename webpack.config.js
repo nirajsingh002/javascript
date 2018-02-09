@@ -9,7 +9,7 @@ module.exports = {
 		library: 'formValidation',
 		libraryTarget: "umd"
 	},
-	devtool: 'inline-source-map',
+	devtool: 'cheap-source-map',
 	resolve: {
         extensions: ['.js']
     },

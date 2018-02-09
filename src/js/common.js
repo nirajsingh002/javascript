@@ -50,11 +50,15 @@ var Utils = (function () {
 		function isNumber(evt) {
 			evt = (evt) ? evt : window.event;
 			var charCode = (evt.which) ? evt.which : evt.keyCode;
+			//190
+			if(charCode === 46) { // allow dot
+				return true;
+			}
 			if(charCode > 31 && (charCode < 48 || charCode > 57)) {
 				console.log('false');
 				return false;
 			}
-				console.log('true');
+			
 			return true;
 		} 
 
