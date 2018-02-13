@@ -31,7 +31,7 @@ function APRCalculator(form) {
 	// approx. # Days to Repay = Payback Amount / Daily Payment
 	function daysToRepay(cumulativeValues) {
 		const daysToRepay = (this.inputFormValues.paybackAmount / cumulativeValues["dailyPayment"]);
-		return addCommas(daysToRepay);
+		return daysToRepay;
 	}
 
 	// Financing Cost = Payback Amout - Amount Advanced
@@ -63,12 +63,13 @@ function APRCalculator(form) {
 		const daily_payment = calculatedValues['dailyPayment'].toFixed(2);
 		const APRCalculation = calculatedValues['APRCalculation'].toFixed(2);
 		const dailyInterestRate = calculatedValues['dailyInterestRate'].toFixed(4);
+		const daysToRepay = addCommas(calculatedValues['daysToRepay']);
 		var  htmlStr = '';
 			 htmlStr += `<table cellspacing="10">\
 							<tr><td> Daily Payment </td><td>$ ${daily_payment} </td></tr>\
 							<tr><td> Daily Interest Rate </td><td> ${dailyInterestRate} %</td></tr>\
 							<tr><td> APR </td><td> ${APRCalculation} %</td></tr>\
-							<tr><td> Repaid in about </td><td> ${calculatedValues['daysToRepay']} days</td></tr>\
+							<tr><td> Repaid in about </td><td> ${daysToRepay} days</td></tr>\
 							<tr><td> Total Financing Cost </td><td>$ ${calculatedValues['financingCost']} </td></tr>\
 						</table>`; 
 		outputContainer.innerHTML = htmlStr;
