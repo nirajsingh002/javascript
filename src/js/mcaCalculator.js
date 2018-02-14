@@ -42,7 +42,18 @@ function APRCalculator(form) {
 
 	// Effective APR = RATE(daysToRepay, dailyPayment, advanceAmount) * 365 * 100
 	function APRCalculation(cumulativeValues) {
-		const effective_APR = RATE(cumulativeValues.daysToRepay, -(cumulativeValues.dailyPayment), Number(this.inputFormValues.amountAdvanced)) * 365 * 100;
+		const approximate_days_to_repay = cumulativeValues.daysToRepay;
+		var effective_APR = 0;
+		if (cumulativeValues.daysToRepay < 2000)
+	    {
+	        effective_APR = RATE(approximate_days_to_repay, -(cumulativeValues.dailyPayment), Number(this.inputFormValues.amountAdvanced)) * 365 * 100;
+	    }
+	    else {
+	        const months = ((approximate_days_to_repay/365)*12);
+	        const monthly_payment = (-1*365*cumulativeValues.dailyPayment/12);
+	        effective_APR = RATE(months, monthly_payment, Number(this.inputFormValues.amountAdvanced)) * 12 * 100;
+	    }
+		
 		return effective_APR;
 	}
 
@@ -62,15 +73,16 @@ function APRCalculator(form) {
 		const outputContainer = document.getElementById(selector);
 		const daily_payment = calculatedValues['dailyPayment'].toFixed(2);
 		const APRCalculation = calculatedValues['APRCalculation'].toFixed(2);
-		const dailyInterestRate = calculatedValues['dailyInterestRate'].toFixed(4);
+		const dailyInterestRate = calculatedValues['dailyInterestRate'].toFixed(3);
 		const daysToRepay = addCommas(calculatedValues['daysToRepay']);
+		const financingCost = addCommas(calculatedValues['financingCost']);
 		var  htmlStr = '';
 			 htmlStr += `<table cellspacing="10">\
 							<tr><td> Daily Payment </td><td>$ ${daily_payment} </td></tr>\
 							<tr><td> Daily Interest Rate </td><td> ${dailyInterestRate} %</td></tr>\
 							<tr><td> APR </td><td> ${APRCalculation} %</td></tr>\
 							<tr><td> Repaid in about </td><td> ${daysToRepay} days</td></tr>\
-							<tr><td> Total Financing Cost </td><td>$ ${calculatedValues['financingCost']} </td></tr>\
+							<tr><td> Total Financing Cost </td><td>$ ${financingCost} </td></tr>\
 						</table>`; 
 		outputContainer.innerHTML = htmlStr;
 	}
